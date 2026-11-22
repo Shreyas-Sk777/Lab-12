@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - NexusMart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                ⚡ Nexus<span>Mart</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html" class="active">Shopping Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="login.html" id="navUserBtn" class="user-btn">👤 Sign In</a>
+                <a href="cart.html" class="cart-icon-btn">
+                    🛒 Cart <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 30px;">
+        
+        <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 2.2rem; color: var(--dark); margin-bottom: 6px;">Shopping Cart</h1>
+            <p style="color: var(--muted); font-size: 0.95rem;">Review your selected tech items and proceed to secure checkout.</p>
+        </div>
+
+        <!-- Empty Cart Notice -->
+        <div id="emptyCartNotice" style="display: none; background: white; border-radius: 16px; border: 1px solid var(--border); padding: 60px; text-align: center; margin-bottom: 60px;">
+            <div style="font-size: 4rem; margin-bottom: 14px;">🛒</div>
+            <h2 style="font-size: 1.8rem; color: var(--dark); margin-bottom: 8px;">Your Shopping Cart is Empty</h2>
+            <p style="color: var(--muted); font-size: 1rem; margin-bottom: 24px;">Looks like you haven't added any products yet.</p>
+            <a href="products.html" class="btn btn-primary" style="padding: 13px 26px;">
+                🛍️ Browse Products Catalog
+            </a>
+        </div>
+
+        <!-- Cart Content Layout -->
+        <div id="cartContentLayout" class="cart-layout">
+            
+            <!-- Left: Cart Items Table -->
+            <div class="cart-items-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1.5px solid var(--border);">
+                    <h3 style="font-size: 1.2rem; color: var(--dark);">Items in Cart (<span id="cartHeaderCount">0</span>)</h3>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="handleClearCart()">
+                        🗑️ Clear All
+                    </button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <a href="products.html" class="btn btn-secondary">
+                        &larr; Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Order Summary Sidebar -->
+            <div class="summary-card">
+                <h3>Order Summary</h3>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="sumSubtotal">₹0</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Estimated Shipping</span>
+                    <span id="sumShipping" style="color: var(--accent); font-weight: 600;">FREE</span>
+                </div>
+
+                <div class="summary-row" id="discountRow" style="display: none; color: #16a34a;">
+                    <span>Promo Discount (<span id="promoLabel">10%</span>)</span>
+                    <span id="sumDiscount">-₹0</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Estimated Tax (GST 18%)</span>
+                    <span id="sumTax">₹0</span>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Estimated Total</span>
+                    <span id="sumTotal" style="color: var(--primary);">₹0</span>
+                </div>
+
+                <!-- Promo Code -->
+                <div style="margin-top: 20px;">
+                    <label for="promoCode" style="font-size: 0.85rem; font-weight: 600; color: var(--slate); display: block; margin-bottom: 6px;">
+                        Have a Promo Code?
+                    </label>
+                    <div class="promo-box">
+                        <input type="text" id="promoInput" placeholder="Try code: LAB12">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="applyPromo()">Apply</button>
+                    </div>
+                    <div id="promoMsg" style="font-size: 0.82rem; margin-top: -10px; margin-bottom: 12px; display: none;"></div>
+                </div>
+
+                <a href="checkout.html" class="btn btn-primary btn-block" style="padding: 14px; font-size: 1.05rem;">
+                    🔒 Proceed to Checkout
+                </a>
+
+                <div style="margin-top: 18px; text-align: center; font-size: 0.82rem; color: var(--muted);">
+                    🛡️ Guaranteed Safe &amp; Secure Checkout
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: #ffffff; margin-bottom: 12px;">
+                    ⚡ Nexus<span>Mart</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    Client-side persistent cart using browser LocalStorage. Quantities, item subtotals, and coupon discounts are calculated dynamically.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html">Shopping Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="login.html">My Account</a></li>
+                    <li><a href="products.xml" target="_blank">XML Feed</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Accepted Payments</h4>
+                <p style="font-size: 0.85rem; color: #94a3b8;">
+                    UPI &bull; Net Banking &bull; Visa &bull; MasterCard &bull; Cash on Delivery
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 NexusMart. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Shared App Script -->
+    <script src="app.js"></script>
+    <script>
+        let discountRate = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCartPage();
+        });
+
+        function renderCartPage() {
+            const cart = getCart();
+            const emptyNotice = document.getElementById('emptyCartNotice');
+            const cartLayout = document.getElementById('cartContentLayout');
+            const tbody = document.getElementById('cartTableBody');
+            const cartHeaderCount = document.getElementById('cartHeaderCount');
+
+            if (cart.length === 0) {
+                emptyNotice.style.display = 'block';
+                cartLayout.style.display = 'none';
+                return;
+            }
+
+            emptyNotice.style.display = 'none';
+            cartLayout.style.display = 'grid';
+            cartHeaderCount.textContent = getCartCount();
+
+            tbody.innerHTML = '';
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="cart-prod-cell">
+                            <img src="${item.image}" alt="${item.name}">
+                            <div>
+                                <a href="product-details.html?id=${item.id}" style="font-weight: 700; color: var(--dark); font-size: 0.95rem;">
+                                    ${item.name}
+                                </a>
+                                <div style="font-size: 0.8rem; color: var(--muted);">${item.category}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="font-weight: 600;">${formatCurrency(item.price)}</td>
+                    <td>
+                        <div class="quantity-picker" style="border-radius: 6px;">
+                            <button type="button" onclick="changeQty('${item.id}', -1)" style="padding: 4px 8px;">-</button>
+                            <input type="text" value="${item.quantity}" readonly style="width: 32px; font-size: 0.9rem;">
+                            <button type="button" onclick="changeQty('${item.id}', 1)" style="padding: 4px 8px;">+</button>
+                        </div>
+                    </td>
+                    <td style="font-weight: 700; color: var(--dark);">${formatCurrency(itemTotal)}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeItem('${item.id}')" title="Remove item">
+                            🗑️
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Calculate Order Summary
+            const shipping = subtotal > 999 ? 0 : 99;
+            const discountAmount = Math.round(subtotal * discountRate);
+            const taxableAmount = Math.max(0, subtotal - discountAmount);
+            const tax = Math.round(taxableAmount * 0.18);
+            const total = taxableAmount + shipping + tax;
+
+            document.getElementById('sumSubtotal').textContent = formatCurrency(subtotal);
+            document.getElementById('sumShipping').textContent = shipping === 0 ? 'FREE' : formatCurrency(shipping);
+            document.getElementById('sumTax').textContent = formatCurrency(tax);
+            document.getElementById('sumTotal').textContent = formatCurrency(total);
+
+            const discountRow = document.getElementById('discountRow');
+            if (discountRate > 0) {
+                discountRow.style.display = 'flex';
+                document.getElementById('sumDiscount').textContent = `-${formatCurrency(discountAmount)}`;
+            } else {
+                discountRow.style.display = 'none';
+            }
+        }
+
+        function changeQty(productId, delta) {
+            updateCartQuantity(productId, delta);
+            renderCartPage();
+        }
+
+        function removeItem(productId) {
+            removeFromCart(productId);
+            renderCartPage();
+        }
+
+        function handleClearCart() {
+            if (confirm('Are you sure you want to clear all items in your cart?')) {
+                clearCart();
+                renderCartPage();
+            }
+        }
+
+        function applyPromo() {
+            const code = document.getElementById('promoInput').value.trim().toUpperCase();
+            const msg = document.getElementById('promoMsg');
+            msg.style.display = 'block';
+
+            if (code === 'LAB12' || code === 'SAVE10') {
+                discountRate = 0.10; // 10%
+                msg.style.color = '#15803d';
+                msg.textContent = '✅ Coupon applied! 10% discount has been deducted.';
+                document.getElementById('promoLabel').textContent = '10%';
+            } else if (code === 'NEXUS20') {
+                discountRate = 0.20; // 20%
+                msg.style.color = '#15803d';
+                msg.textContent = '🎉 Super Coupon applied! 20% discount deducted.';
+                document.getElementById('promoLabel').textContent = '20%';
+            } else {
+                discountRate = 0;
+                msg.style.color = '#dc2626';
+                msg.textContent = '❌ Invalid coupon code. Try LAB12 or NEXUS20.';
+            }
+            renderCartPage();
+        }
+    </script>
+</body>
+</html>

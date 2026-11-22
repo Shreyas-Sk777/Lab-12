@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - NexusMart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                ⚡ Nexus<span>Mart</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="login.html" id="navUserBtn" class="user-btn">👤 Sign In</a>
+                <a href="cart.html" class="cart-icon-btn">
+                    🛒 Cart <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 30px;">
+        
+        <!-- Breadcrumbs -->
+        <div style="font-size: 0.88rem; color: var(--muted); margin-bottom: 24px;">
+            <a href="index.html" style="color: var(--primary);">Home</a> &gt; 
+            <a href="products.html" style="color: var(--primary);">Products</a> &gt; 
+            <span id="breadcrumbCategory">Category</span> &gt; 
+            <span id="breadcrumbName" style="color: var(--dark); font-weight: 600;">Product Details</span>
+        </div>
+
+        <!-- Product Details Layout -->
+        <div id="detailsCard" class="details-layout">
+            <!-- Left: Gallery -->
+            <div class="details-gallery">
+                <img id="detailImg" src="" alt="Product Image">
+            </div>
+
+            <!-- Right: Information & Actions -->
+            <div class="details-info">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span id="detailBrand" style="text-transform: uppercase; font-size: 0.82rem; font-weight: 700; color: var(--primary); letter-spacing: 0.5px;">BRAND</span>
+                    <span id="detailCategory" class="badge-category" style="position: static;">CATEGORY</span>
+                </div>
+
+                <h1 id="detailName">Loading Product Details...</h1>
+
+                <div class="meta">
+                    <span id="detailRating" style="color: #f59e0b; font-weight: 700;">⭐ 4.8</span>
+                    <span id="detailReviews" style="color: var(--muted); font-size: 0.88rem;">(100+ Reviews)</span>
+                    <span class="stock-tag">🟢 In Stock &bull; Ready to Ship</span>
+                </div>
+
+                <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px;">
+                    <span id="detailPrice" class="current-price" style="font-size: 2.2rem;">₹0</span>
+                    <span id="detailOriginalPrice" class="original-price" style="font-size: 1.2rem;">₹0</span>
+                    <span id="detailDiscount" class="badge-discount" style="position: static; font-size: 0.82rem;">0% OFF</span>
+                </div>
+
+                <p id="detailDesc" class="details-desc">
+                    Product description will be loaded from the XML catalog.
+                </p>
+
+                <!-- Specifications Table (from XML) -->
+                <h3 style="font-size: 1.05rem; color: var(--dark); margin-bottom: 12px;">Technical Specifications (from XML)</h3>
+                <table class="specs-table">
+                    <tbody id="specsTableBody">
+                        <!-- Loaded from XML -->
+                    </tbody>
+                </table>
+
+                <!-- Purchase Controls -->
+                <div class="details-purchase">
+                    <div class="quantity-picker">
+                        <button type="button" onclick="adjustQty(-1)">-</button>
+                        <input type="text" id="qtyInput" value="1" readonly>
+                        <button type="button" onclick="adjustQty(1)">+</button>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="addToCartCurrent()" style="flex: 1; padding: 13px;">
+                        <span>🛒</span> Add to Cart
+                    </button>
+
+                    <button type="button" class="btn btn-accent" onclick="buyNowCurrent()" style="padding: 13px 22px;">
+                        <span>⚡</span> Buy Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products Section -->
+        <section style="margin-bottom: 50px;">
+            <div class="section-header">
+                <h2>Similar Products You May Like</h2>
+                <a href="products.html" class="btn btn-secondary btn-sm">Browse All &rarr;</a>
+            </div>
+            <div id="relatedGrid" class="products-grid"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: #ffffff; margin-bottom: 12px;">
+                    ⚡ Nexus<span>Mart</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    Detailed product views dynamically constructed from XML data attributes, specification nodes, and high-resolution media.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">All Products</a></li>
+                    <li><a href="cart.html">View Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="contact.html">Contact Support</a></li>
+                    <li><a href="login.html">My Account</a></li>
+                    <li><a href="products.xml" target="_blank">View products.xml</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Guaranteed Quality</h4>
+                <p style="font-size: 0.85rem; color: #94a3b8;">
+                    Every product is verified and guaranteed authentic with manufacturer warranty.
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 NexusMart. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Shared App Script -->
+    <script src="app.js"></script>
+    <script>
+        let currentProduct = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id') || 'PROD001';
+
+            const products = await loadProductsFromXml();
+            currentProduct = products.find(p => p.id === productId) || products[0];
+
+            if (currentProduct) {
+                renderProductDetails(currentProduct);
+                renderRelatedProducts(products, currentProduct);
+            }
+        });
+
+        function renderProductDetails(p) {
+            document.title = `${p.name} - NexusMart`;
+            document.getElementById('breadcrumbCategory').textContent = p.category;
+            document.getElementById('breadcrumbName').textContent = p.name;
+            document.getElementById('detailImg').src = p.image;
+            document.getElementById('detailBrand').textContent = p.brand;
+            document.getElementById('detailCategory').textContent = p.category;
+            document.getElementById('detailName').textContent = p.name;
+            document.getElementById('detailRating').textContent = `⭐ ${p.rating}`;
+            document.getElementById('detailReviews').textContent = `(${p.reviews} verified reviews)`;
+            document.getElementById('detailPrice').textContent = formatCurrency(p.price);
+            document.getElementById('detailOriginalPrice').textContent = formatCurrency(p.originalPrice);
+
+            const discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
+            document.getElementById('detailDiscount').textContent = `${discount}% OFF`;
+            document.getElementById('detailDesc').textContent = p.description;
+
+            // Render specs table
+            const tbody = document.getElementById('specsTableBody');
+            tbody.innerHTML = '';
+            if (p.specs && p.specs.length > 0) {
+                p.specs.forEach(s => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<th>${s.name}</th><td>${s.value}</td>`;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="2">Standard manufacturer specifications apply.</td></tr>';
+            }
+        }
+
+        function adjustQty(delta) {
+            const input = document.getElementById('qtyInput');
+            let val = parseInt(input.value, 10) || 1;
+            val = Math.max(1, Math.min(10, val + delta));
+            input.value = val;
+        }
+
+        function addToCartCurrent() {
+            if (!currentProduct) return;
+            const qty = parseInt(document.getElementById('qtyInput').value, 10) || 1;
+            addToCart(currentProduct, qty);
+        }
+
+        function buyNowCurrent() {
+            if (!currentProduct) return;
+            const qty = parseInt(document.getElementById('qtyInput').value, 10) || 1;
+            addToCart(currentProduct, qty);
+            window.location.href = 'checkout.html';
+        }
+
+        function renderRelatedProducts(allProducts, current) {
+            const related = allProducts.filter(p => p.id !== current.id && (p.category === current.category || p.featured)).slice(0, 4);
+            const grid = document.getElementById('relatedGrid');
+            grid.innerHTML = '';
+
+            related.forEach(prod => {
+                const discount = Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100);
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img-box">
+                        <img src="${prod.image}" alt="${prod.name}">
+                        <span class="badge-discount">${discount}% OFF</span>
+                        <span class="badge-category">${prod.category}</span>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-brand">${prod.brand}</div>
+                        <h3 class="product-title">${prod.name}</h3>
+                        <div class="product-rating">
+                            <span>⭐ ${prod.rating}</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="current-price">${formatCurrency(prod.price)}</span>
+                        </div>
+                        <div class="product-actions" style="grid-template-columns: 1fr;">
+                            <a href="product-details.html?id=${prod.id}" class="btn btn-secondary btn-sm">View Item</a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

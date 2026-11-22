@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Sign In &amp; Register - NexusMart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                ⚡ Nexus<span>Mart</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="login.html" id="navUserBtn" class="user-btn">👤 Sign In</a>
+                <a href="cart.html" class="cart-icon-btn">
+                    🛒 Cart <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Logged In User State Display -->
+        <div id="loggedInView" style="display: none; max-width: 520px; margin: 40px auto; background: white; border-radius: 16px; border: 1px solid var(--border); padding: 40px; text-align: center;">
+            <div style="font-size: 3.5rem; margin-bottom: 12px;">👤</div>
+            <h2 style="font-size: 1.8rem; color: var(--dark); margin-bottom: 6px;">
+                Welcome back, <span id="profName">User</span>!
+            </h2>
+            <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 24px;">
+                You are currently logged in to your NexusMart account.
+            </p>
+
+            <table class="specs-table" style="margin-bottom: 24px;">
+                <tbody>
+                    <tr>
+                        <th>Account Name</th>
+                        <td id="profNameCell">User</td>
+                    </tr>
+                    <tr>
+                        <th>Registered Email</th>
+                        <td id="profEmailCell">user@example.com</td>
+                    </tr>
+                    <tr>
+                        <th>Membership</th>
+                        <td><span style="background: #dbeafe; color: #1e40af; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 12px;">NEXUS PRIME</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <a href="products.html" class="btn btn-primary">🛍️ Start Shopping</a>
+                <button type="button" class="btn btn-danger" onclick="handleLogout()">🚪 Sign Out</button>
+            </div>
+        </div>
+
+        <!-- Auth Tabs Container -->
+        <div id="authTabsContainer" class="auth-container">
+            
+            <div class="auth-tabs">
+                <div id="tabSignIn" class="auth-tab active" onclick="switchTab('signin')">
+                    Sign In
+                </div>
+                <div id="tabRegister" class="auth-tab" onclick="switchTab('register')">
+                    Register Account
+                </div>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="signInForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address or Username *</label>
+                    <input type="text" id="loginEmail" placeholder="e.g. john.doe@example.com" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password *</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.85rem;">
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--slate);">
+                        <input type="checkbox" checked> Remember me
+                    </label>
+                    <a href="#" style="color: var(--primary); font-weight: 600;" onclick="alert('Password reset link simulated.'); return false;">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="padding: 13px;">
+                    Sign In to Account
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" style="display: none;" autocomplete="off">
+                <div class="form-group">
+                    <label for="regName">Full Name *</label>
+                    <input type="text" id="regName" placeholder="e.g. Priya Sharma" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Email Address *</label>
+                    <input type="email" id="regEmail" placeholder="e.g. priya@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPass">Create Password (min. 6 characters) *</label>
+                    <input type="password" id="regPass" placeholder="Choose a secure password" minlength="6" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassConf">Confirm Password *</label>
+                    <input type="password" id="regPassConf" placeholder="Repeat your password" minlength="6" required>
+                </div>
+
+                <div style="margin-bottom: 20px; font-size: 0.85rem; color: var(--slate);">
+                    <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" required style="margin-top: 3px;">
+                        <span>I accept the Terms of Service &amp; Privacy Policy.</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-accent btn-block" style="padding: 13px;">
+                    Create NexusMart Account
+                </button>
+            </form>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: #ffffff; margin-bottom: 12px;">
+                    ⚡ Nexus<span>Mart</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    Authentication portal with tabbed Sign In &amp; Account Registration interfaces and persistent user session states.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html">Shopping Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="contact.html">Help Center</a></li>
+                    <li><a href="products.xml" target="_blank">XML Products</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Lab 12 Details</h4>
+                <p style="font-size: 0.85rem; color: #94a3b8;">
+                    Designed for Web Programming Lab 12 using HTML, CSS, JavaScript and XML.
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 NexusMart. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Shared App Script -->
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderUserState();
+
+            // Sign In Submit
+            document.getElementById('signInForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const emailOrUser = document.getElementById('loginEmail').value.trim();
+                const displayName = emailOrUser.includes('@') ? emailOrUser.split('@')[0] : emailOrUser;
+
+                const userObj = {
+                    name: displayName.charAt(0).toUpperCase() + displayName.slice(1),
+                    email: emailOrUser.includes('@') ? emailOrUser : `${emailOrUser}@example.com`
+                };
+
+                setLoggedInUser(userObj);
+                showToast(`👋 Welcome back, ${userObj.name}!`);
+                renderUserState();
+            });
+
+            // Register Submit
+            document.getElementById('registerForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('regName').value.trim();
+                const email = document.getElementById('regEmail').value.trim();
+                const pass = document.getElementById('regPass').value;
+                const passConf = document.getElementById('regPassConf').value;
+
+                if (pass !== passConf) {
+                    alert('Passwords do not match! Please check again.');
+                    return;
+                }
+
+                const userObj = { name, email };
+                setLoggedInUser(userObj);
+                showToast(`🎉 Account created! Welcome to NexusMart, ${name}!`);
+                renderUserState();
+            });
+        });
+
+        function switchTab(tab) {
+            const tabSignIn = document.getElementById('tabSignIn');
+            const tabReg = document.getElementById('tabRegister');
+            const formSignIn = document.getElementById('signInForm');
+            const formReg = document.getElementById('registerForm');
+
+            if (tab === 'signin') {
+                tabSignIn.classList.add('active');
+                tabReg.classList.remove('active');
+                formSignIn.style.display = 'block';
+                formReg.style.display = 'none';
+            } else {
+                tabReg.classList.add('active');
+                tabSignIn.classList.remove('active');
+                formReg.style.display = 'block';
+                formSignIn.style.display = 'none';
+            }
+        }
+
+        function renderUserState() {
+            const user = getLoggedInUser();
+            const loggedInView = document.getElementById('loggedInView');
+            const authContainer = document.getElementById('authTabsContainer');
+
+            if (user) {
+                loggedInView.style.display = 'block';
+                authContainer.style.display = 'none';
+                document.getElementById('profName').textContent = user.name;
+                document.getElementById('profNameCell').textContent = user.name;
+                document.getElementById('profEmailCell').textContent = user.email;
+            } else {
+                loggedInView.style.display = 'none';
+                authContainer.style.display = 'block';
+            }
+            updateNavUser();
+        }
+
+        function handleLogout() {
+            logoutUser();
+            renderUserState();
+        }
+    </script>
+</body>
+</html>

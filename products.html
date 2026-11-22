@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Catalog - NexusMart (XML Powered)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                ⚡ Nexus<span>Mart</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="login.html" id="navUserBtn" class="user-btn">👤 Sign In</a>
+                <a href="cart.html" class="cart-icon-btn">
+                    🛒 Cart <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 30px;">
+        
+        <!-- Page Title & Status -->
+        <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 2.2rem; color: var(--dark); margin-bottom: 6px;">Product Catalog</h1>
+            <p style="color: var(--muted); font-size: 0.95rem;">
+                Live catalog dynamically parsed from <a href="products.xml" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;"><code>products.xml</code></a> using JavaScript DOMParser.
+            </p>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="catalog-controls">
+            <!-- Category Pills -->
+            <div class="filter-pills" id="categoryFilters">
+                <button class="pill-btn active" data-category="ALL">All Categories</button>
+                <button class="pill-btn" data-category="Audio">Audio</button>
+                <button class="pill-btn" data-category="Wearables">Wearables</button>
+                <button class="pill-btn" data-category="Smartphones">Smartphones</button>
+                <button class="pill-btn" data-category="Laptops">Laptops</button>
+                <button class="pill-btn" data-category="Accessories">Accessories</button>
+            </div>
+
+            <!-- Search Bar & Sorting Dropdown -->
+            <div class="search-sort-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by product name or brand...">
+                <select id="sortSelect" class="sort-select">
+                    <option value="featured">Featured First</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.9rem; color: var(--muted);">
+            <span>Showing <strong id="productCount" style="color: var(--dark);">0</strong> products from XML</span>
+            <span id="activeFilterLabel" style="font-weight: 600; color: var(--primary);">Category: All</span>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div id="catalogGrid" class="products-grid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: var(--muted);">
+                ⏳ Fetching and parsing products.xml...
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: #ffffff; margin-bottom: 12px;">
+                    ⚡ Nexus<span>Mart</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 16px;">
+                    Product catalog loaded from <code>products.xml</code> via JavaScript. Supports client-side filtering, live search, and sorting.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Information</h4>
+                <ul class="footer-links">
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="login.html">Sign In / Register</a></li>
+                    <li><a href="products.xml" target="_blank">XML Source File</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Lab 12 Spec</h4>
+                <p style="font-size: 0.85rem; color: #94a3b8;">
+                    XML Parsing &bull; DOM Manipulation &bull; LocalStorage Cart &bull; Form Validation
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 NexusMart. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Shared App Script -->
+    <script src="app.js"></script>
+    <script>
+        let allProducts = [];
+        let currentCategory = 'ALL';
+        let searchQuery = '';
+        let currentSort = 'featured';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            allProducts = await loadProductsFromXml();
+            renderCatalog();
+
+            // Category Filter Click Handlers
+            const pillButtons = document.querySelectorAll('#categoryFilters .pill-btn');
+            pillButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    pillButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.getAttribute('data-category');
+                    document.getElementById('activeFilterLabel').textContent = `Category: ${btn.textContent}`;
+                    renderCatalog();
+                });
+            });
+
+            // Search Handler
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                renderCatalog();
+            });
+
+            // Sort Handler
+            document.getElementById('sortSelect').addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                renderCatalog();
+            });
+        });
+
+        function renderCatalog() {
+            const grid = document.getElementById('catalogGrid');
+            const countLabel = document.getElementById('productCount');
+
+            // 1. Filter by Category
+            let filtered = allProducts.filter(p => {
+                return (currentCategory === 'ALL' || p.category === currentCategory);
+            });
+
+            // 2. Filter by Search Query
+            if (searchQuery) {
+                filtered = filtered.filter(p => {
+                    return p.name.toLowerCase().includes(searchQuery) || 
+                           p.brand.toLowerCase().includes(searchQuery) ||
+                           p.description.toLowerCase().includes(searchQuery);
+                });
+            }
+
+            // 3. Sort
+            if (currentSort === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            }
+
+            countLabel.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px; background: white; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+                        <h3 style="color: var(--dark); margin-bottom: 6px;">No Products Found</h3>
+                        <p style="color: var(--muted); font-size: 0.95rem;">Try adjusting your category filter or search keywords.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = '';
+            filtered.forEach(prod => {
+                const discount = Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100);
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img-box">
+                        <img src="${prod.image}" alt="${prod.name}">
+                        <span class="badge-discount">${discount}% OFF</span>
+                        <span class="badge-category">${prod.category}</span>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-brand">${prod.brand}</div>
+                        <h3 class="product-title" title="${prod.name}">${prod.name}</h3>
+                        <div class="product-rating">
+                            <span>⭐ ${prod.rating}</span>
+                            <span class="count">(${prod.reviews} reviews)</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="current-price">${formatCurrency(prod.price)}</span>
+                            <span class="original-price">${formatCurrency(prod.originalPrice)}</span>
+                        </div>
+                        <div class="product-actions">
+                            <a href="product-details.html?id=${prod.id}" class="btn btn-secondary btn-sm">Details</a>
+                            <button class="btn btn-primary btn-sm" onclick="handleAddToCart('${prod.id}')">Add Cart</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function handleAddToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (product) {
+                addToCart(product, 1);
+            }
+        }
+    </script>
+</body>
+</html>
